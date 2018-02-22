@@ -9,7 +9,7 @@ SiOP
 
 NOM
 
-		SiOP - Simulateur de corde vibrante et spectre de fréquence
+		SiOP - Simulateur d'onde progressive
 
 SYNOPSIS
 
@@ -104,7 +104,7 @@ LICENCE
 
 	Copyright février 2018, Stephan Runigo
 	runigo@free.fr
-	SiOP est un simulateur d'ondes progressive en 2 dimensions. Ce 
+	SiOP est un simulateur d'ondes progressives en 2 dimensions. Ce 
 	logiciel est un programme informatique servant à simuler l'équation de 
 	propagation d'une onde en deux dimensions et à donner une représentation 
 	graphique de cette onde. 
