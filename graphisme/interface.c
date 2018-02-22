@@ -31,30 +31,55 @@ termes.
 */
 
 
-#include "graphe.h"
+#include "interface.h"
 
-int grapheInitialisation(SDL_Renderer *rendu, grapheT * graphe)
-{
-	(void)rendu;
-	(void)graphe;
+int interfaceInitialisation(interfaceT * interface, int fond)
+	{
+	assert(SDL_Init(SDL_INIT_VIDEO) == 0);
+
+	(*interface).continu = true;
+	(*interface).fond = fond;
+
+
+		// Création de la fenêtre
+					//  SDL_WINDOW_SHOWN || SDL_WINDOW_RESIZABLE
+	(*interface).fenetre = SDL_CreateWindow("Simulateur d'onde", SDL_WINDOWPOS_UNDEFINED, 
+							SDL_WINDOWPOS_UNDEFINED, DIMENSION_X, DIMENSION_Y, 
+							SDL_WINDOW_SHOWN);
+	if(NULL == (*interface).fenetre)
+		fprintf(stderr, "interfaceInitialisation : Erreur SDL_CreateWindow : %s.", SDL_GetError());
+
+
+		// Création du rendu
+
+	(*interface).rendu = SDL_CreateRenderer((*interface).fenetre, -1 , 
+					SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+	if(NULL == (*interface).rendu)
+		fprintf(stderr, "interfaceInitialisation : Erreur SDL_CreateRenderer : %s.", SDL_GetError());
 
 	return 0;
-}
-
-	// Dessin 
-void grapheDessineAmplitude(SDL_Renderer *rendu, grapheT * graphe)
-	{
-	int i, j;
-	SDL_Rect coordonnee = {0, 0, CELLULE, CELLULE};
-	for(i=0;i<DIMENSION_X;i++)
-		{
-		for(j=0;j<DIMENSION_Y;j++)
-			{
-			SDL_SetRenderDrawColor(renderer, 255-(*graphe).amplitude, 0, (*graphe).amplitude, 255);
-			SDL_RenderDrawPoint(rendu, i, j);
-			}
-		}
-	return;
 	}
 
-/////////////////////////////////////////////////////////////////////////
+int interfaceNettoyage(interfaceT * interface)
+	{
+	int fond = (*interface).fond;
+	SDL_SetRenderDrawColor((*interface).rendu, fond, fond, fond, 0);//SDL_ALPHA_OPAQUE
+	SDL_RenderClear((*interface).rendu);
+	SDL_SetRenderDrawColor((*interface).rendu, 255-fond, 255-fond, 255-fond, 0);//SDL_ALPHA_OPAQUE
+	return 0;
+	}
+
+int interfaceMiseAJour(interfaceT * interface)
+	{
+	SDL_RenderPresent((*interface).rendu);
+	return 0;
+	}
+
+int interfaceDestruction(interfaceT * interface)
+	{
+	SDL_DestroyRenderer((*interface).rendu);
+	SDL_DestroyWindow((*interface).fenetre);
+	SDL_Quit();
+	return 0;
+	}

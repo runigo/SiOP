@@ -45,6 +45,8 @@ termes.
 
 #define LARGEUR 900	//	Largeur de la fenetre
 #define HAUTEUR 400		//	Hauteur de la fenetre
+#define DIMENSION_X 90	//	Largeur de la fenetre
+#define DIMENSION_Y 40		//	Hauteur de la fenetre
 
 #define N 1024			//	nombre de pendule = puissance de 2
 #define Ne N/2			//	zone de calcul de la TF

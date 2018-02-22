@@ -30,16 +30,25 @@ pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
 
-#ifndef _GRAPHIQUE_
-#define _GRAPHIQUE_
 
-#include <SDL/SDL.h>
-#include "graphe.h"
+#ifndef _INTERFACE_
+#define _INTERFACE_
 
-void graphiqueInitialise(int equation, int FOND);
-void graphiqueMiseAJour(void);
+#include "../donnees/constantes.h"
 
-int graphiqueDessineCorde(graphe * graph);
-int graphiqueDessineSpectre(graphe * graph);
+#include <SDL2/SDL.h>
 
+typedef struct InterfaceT interfaceT;
+struct InterfaceT {
+	SDL_Window *fenetre;
+	SDL_Renderer *rendu;
+	SDL_Event evenement;
+	bool continu;
+	int fond;
+};
+
+int interfaceInitialisation(interfaceT * interface, int fond);
+int interfaceNettoyage(interfaceT * interface);
+int interfaceMiseAJour(interfaceT * interface);
+int interfaceDestruction(interfaceT * interface);
 #endif

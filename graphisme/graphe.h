@@ -30,32 +30,23 @@ pris connaissance de la licence CeCILL, et que vous en avez accepté les
 termes.
 */
 
+
 #ifndef _GRAPHE_
 #define _GRAPHE_
 
-#include "../donnees/constantes.h"
+#include "interface.h"
+#include "../graphisme/points.h"
 
-typedef struct Graphe graphe;
-	struct Graphe
-		{
-		int ancienAbscisse[N];
-		int nouvelAbscisse[N];
-		int ancienOrdonnee[N];
-		int nouvelOrdonnee[N];
+struct GrapheT {
 
-		int fixeAbscisse[N];
-		int fixeOrdonnee[N];
+	int amplitude[DIMENSION_X][DIMENSION_Y]; // Plan du batiment
+				// 0 : libre, 1 : mur, 2 : sortie
 
-		int rouge;
-		int vert;
-		int bleu;
-		int fond;
-		int echelle;
-		};
+};
+typedef struct GrapheT grapheT;
 
-void grapheInitialise(graphe * graph, int rouge, int bleu, int vert, int echelle);
-void grapheFixe(graphe * graph, int X, int Y);
-void grapheNouveau(graphe * graph, int x, int y);
-void grapheIncremente(graphe * graph);
+int grapheInitialisation(SDL_Renderer *rendu, grapheT * graphe);
+
+void grapheDessineAmplitude(SDL_Renderer *rendu, grapheT * graphe);
 
 #endif
