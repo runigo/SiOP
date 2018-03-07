@@ -37,45 +37,29 @@ termes.
 #include "../modele/change.h"			//	Changement des parametres du système
 #include "../modele/observables.h"		//	Calculs énergétiques
 #include "../projection/projection.h"	//	Projection entre les représentations
-#include "../graphisme/graphique.h"		//	Librairie SDL
+#include "../graphisme/interface.h"		//	Librairie SDL
 #include "../donnees/fichier.h"
 
-typedef struct Controleur controleur;
-	struct Controleur
+typedef struct ControleurT controleurT;
+	struct ControleurT
 		{
 
-		options option;		//	Options de la ligne de commande
+		optionsT options;	//	Options de la ligne de commande
 
-		systemeT systeme;		//	Modélisation physique de la chaîne
+		systemeT systeme;	//	Modélisation physique de la chaîne
 
-		fonction spectreG;	//	Spectre de la partie gauche
-		fonction spectreD;	//	Spectre de la partie droite
+		grapheT graphe;		//	Représentation graphique du système
 
-		graphe graphPendule;	//	Représentation graphique de la chaîne
-		graphe graphCorde;		//	Représentation graphique de la corde
-		graphe graphSpectre;	//	Représentation graphique des spectres
+		interfaceT interface;	//	Évenement SDL
 
-		SDL_Event evenement;	//	Évenement SDL
-
-		int appui;	//	1 si le bouton de la souris est appuyé, 0 sinon.
+		int appui;		// 1 si le bouton de la souris est appuyé, 0 sinon.
 
 		};
 
 		// Fonction utilisée par principale.c
-void controleurSimulationGraphique(controleur * control);
+void controleurSimulationGraphique(controleurT * control);
 
 
-
-		// Fonctions utilisées par processus.c
-void controleurEvolutionSpectre(systemeT * systeme, fonction * spectreG, fonction * spectreD);
-void controleurEvolutionGraphCorde(systemeT * systeme, graphe * jonction);
-void controleurEvolutionGraphSpectre(fonction * spectreG, fonction * spectreD, graphe * spectr);
-
-		// Fonctions utilisées par processus.c de SiCP
-int controleurProjection(controleur * control);
-int controleurEvolutionSysteme(controleur * control);
-int controleurConstructionGraphique(controleur * control);
-int controleurActionClavier(controleur * control);
 #endif
 
 //------------------------------------------------------------------//

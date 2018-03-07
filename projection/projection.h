@@ -34,13 +34,8 @@ termes.
 #define _PROJECTION_
 
 #include "../modele/systeme.h"
-#include "../modele/fourier.h"
 #include "../graphisme/graphe.h"
 
-void projectionMoyenneGraphe(graphe * spectr);
-void projectionSystemeGraphe(systemeT * systeme, graphe * cord);
-void projectionSystemeFonction(systemeT * systeme, fonction * spectreG, fonction * spectreD);
-void projectionFonctionGraphe(fonction * spectre, graphe * fourier, int position);
-void projectionSpectreGraphe(fonction * spectreG, fonction * spectreD, graphe * modul);
+void projectionSystemeGraphe(systemeT * systeme, grapheT * graphe);
 
 #endif

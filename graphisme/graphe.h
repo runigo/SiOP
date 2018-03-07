@@ -35,12 +35,15 @@ termes.
 #define _GRAPHE_
 
 #include "interface.h"
-#include "../graphisme/points.h"
 
 struct GrapheT {
 
-	int amplitude[DIMENSION_X][DIMENSION_Y]; // Plan du batiment
-				// 0 : libre, 1 : mur, 2 : sortie
+	int amplitude[DIMENSION_X][DIMENSION_Y]; // 
+
+	int rouge;
+	int vert;
+	int bleu;
+	int fond;
 
 };
 typedef struct GrapheT grapheT;

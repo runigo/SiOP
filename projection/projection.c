@@ -32,180 +32,42 @@ termes.
 
 #include "projection.h"
 
-void projectionMoyenneGraphe(graphe * spectr)
+void projectionSystemeGraphe(systemeT * systeme, grapheT * graphe)
 	{
-	int i;
-	for(i=0;i<N;i++)
-		{
-		(*spectr).nouvelOrdonnee[i] = (*spectr).nouvelOrdonnee[i] + 2 *  (*spectr).ancienOrdonnee[i];
-		}
-	return;
-	}
-
-void projectionSystemeGraphe(systemeT * systeme, graphe * graph)
-	{
-	//		Projette le système sur le graphe "corde"
-	int i, x, y;
-	double max, min, psi;
-	int imin, imax, iamp;
+	//		Projette le système sur le graphe 
+	int i, j;
+	double max, min;
 
 	// Recherche du maximum et du minimum
 
-	max = (*systeme).pendule[0].nouveau;
-	min = (*systeme).pendule[0].nouveau;
+	max = (*systeme).pendule[0][0].nouveau;
+	min = (*systeme).pendule[0][0].nouveau;
 
-	for(i=1;i<N;i++)
+	for(i=0;i<DIMENSION_X;i++)
 		{
-		if((*systeme).pendule[i].nouveau > max)
+		for(j=0;j<DIMENSION_X;j++)
 			{
-			max = (*systeme).pendule[i].nouveau;
-			}
-		if((*systeme).pendule[i].nouveau < min)
-			{
-			min = (*systeme).pendule[i].nouveau;
+			if((*systeme).pendule[i].nouveau > max)
+				{
+				max = (*systeme).pendule[i][j].nouveau;
+				}
+			if((*systeme).pendule[i].nouveau < min)
+				{
+				min = (*systeme).pendule[i][j].nouveau;
+				}
 			}
 		}
 
 	// Amplitude des valeurs à dessiner
-
-	imin = (int)(min);
-	imax = (int)(max);
-	iamp = imax-imin;
+	amplitude = max-min;
 
 	// Projection de la fonction
-
-	for(i=0;i<N;i++)
+	for(i=0;i<DIMENSION_X;i++)
 		{
-		// Position horizontale
-
-		x = LARGEUR/20 + (i*LARGEUR*9) / (N) / 10;
-
-		// Position verticale
-
-		psi = (*systeme).pendule[i].nouveau;
-
-		y = HAUTEUR/4; // Position moyenne du graphe
-
-		if(iamp>3) // Echelle du graphe
+		for(j=0;j<DIMENSION_Y;j++)
 			{
-			y = y - ( psi / (iamp/3) ) * (HAUTEUR/15);
+			(*graphe).amplitude[i][j] = (int)(((*systeme).pendule[i][j].nouveau - min )*255/amplitude);
 			}
-		else
-			{
-			y = y - ( psi ) * (HAUTEUR/5);
-			}
-
-		// Affectation des coordonnées
-
-		(*graph).nouvelAbscisse[i] = x;
-		(*graph).nouvelOrdonnee[i] = y;
-
-		}
-	return;
-	}
-
-void projectionSystemeFonction(systemeT * systeme, fonction * spectreG, fonction * spectreD)
-	{
-	//	Projette les parties gauche et droite du système sur deux fonctions
-	int i;
-	for(i=0;i<Ne;i++)
-		{
-
-		(*spectreG).reel[i]=(*systeme).pendule[i].nouveau;
-		(*spectreG).imag[i]=0.0;
-
-		(*spectreD).reel[i]=(*systeme).pendule[i+Ne].nouveau;
-		(*spectreD).imag[i]=0.0;
-
-		}
-	return;
-	}
-
-void projectionSpectreGraphe(fonction * spectreG, fonction * spectreD, graphe * modul)
-	{
-	//	Projette les fonctions sur le graphe "fourier"
-
-	projectionFonctionGraphe(spectreG, modul, 1);
-	projectionFonctionGraphe(spectreD, modul, 2);
-
-	return;
-
-	}
-
-void projectionFonctionGraphe(fonction * fourier, graphe * spectre, int position)
-	{
-
-	//		Projette une fonction positive sur un demi graphe :
-	//			position 1 : partie gauche,
-	//			position 2 : partie droite
-
-	//		la projection opère un retournement
-	//		du spectre, l'algorithme de fourier
-	//		fournissant un spectre symétrisé
-
-	int i, x, xs, y, ys;
-	double reel, imag;
-	double max;
-	fonction module;
-
-	// Calcul du module
-
-	for(i=0;i<Ne;i++)
-		{
-		reel = (*fourier).reel[i];
-		imag = (*fourier).imag[i];
-		module.reel[i] = sqrt( reel * reel + imag * imag);
-		}
-
-	// Résolution du problème à l'origine
-	// Supprime la "moyenne" ? 
-
-	module.reel[0] = 0;
-	module.reel[Ne-1] = 0;
-
-	// Recherche du maximum
-
-	max = 0.1;
-	for(i=0;i<Ne;i++)
-		{
-		if(module.reel[i] > max)
-			{
-			max = module.reel[i];
-			}
-		}
-	//fprintf(stderr, " Maximum partie %d = %f\n", position, max);
-	// Projection de la fonction
-
-	for(i=0;i<Ne/2;i++)
-		{
-		// Position horizontale
-		x = (2-position)*LARGEUR/20 + (position-1)*LARGEUR/2;
-		xs = x;
-
-		x = x + (2*i*LARGEUR*3) / (Ne) / 10;
-		xs = xs + ((2*i+1)*LARGEUR*3) / (Ne) / 10;
-
-		(*spectre).fixeAbscisse[2*i + (position-1)*Ne] = x;
-		(*spectre).fixeAbscisse[(2*i+1) + (position-1)*Ne] = xs;
-
-		// Position verticale
-
-		y = (HAUTEUR*9)/10;
-		ys = y;
-
-		(*spectre).fixeOrdonnee[2*i + (position-1)*Ne] = y;
-		(*spectre).fixeOrdonnee[2*i+1 + (position-1)*Ne] = ys;
-
-		y = y - (( module.reel[i] / max )*(HAUTEUR*7)) / 20;
-		ys = ys - (( module.reel[Ne-i] / max )*(HAUTEUR*7)) / 20;
-
-		// Affectation des coordonees
-
-		(*spectre).nouvelAbscisse[2*i + (position-1)*Ne] = x;
-		(*spectre).nouvelOrdonnee[2*i + (position-1)*Ne] = y;
-		(*spectre).nouvelAbscisse[2*i+1 + (position-1)*Ne] = xs;
-		(*spectre).nouvelOrdonnee[2*i+1 + (position-1)*Ne] = ys;
-
 		}
 	return;
 	}

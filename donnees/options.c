@@ -32,56 +32,56 @@ termes.
 
 #include "options.h"
 
-void optionsDt(options * option, char *opt);
-void optionsMoteur(options * option, char *opt);
-void optionsFrequence(options * option, char *opt);
-void optionsDissipation(options * option, char *opt);
-void optionsEquation(options * option, char *opt);
-void optionsFond(options * option, char *opt);
-void optionsNombre(options * option, char *opt);
-void optionsThread(options * option, char *opt);
-void optionsPause(options * option, char *opt);
-void optionsSoliton(options * option, char *opt);
-void optionsMode(options * option, char *opt);
-void optionsDuree(options * option, char *opt);
+void optionsDt(optionsT * options, char *opt);
+void optionsMoteur(optionsT * options, char *opt);
+void optionsFrequence(optionsT * options, char *opt);
+void optionsDissipation(optionsT * options, char *opt);
+void optionsEquation(optionsT * options, char *opt);
+void optionsFond(optionsT * options, char *opt);
+void optionsNombre(optionsT * options, char *opt);
+void optionsThread(optionsT * options, char *opt);
+void optionsPause(optionsT * options, char *opt);
+void optionsSoliton(optionsT * options, char *opt);
+void optionsMode(optionsT * options, char *opt);
+void optionsDuree(optionsT * options, char *opt);
 void optionsAide(void);
 
-int optionsTraitement(options * option, int nb, char *opt[])
+int optionsTraitement(optionsT * options, int nb, char *opt[])
 	{
 	int i=0;
-	//fprintf(stderr, "\nNombre d'option : %d\n", nb);
+	//fprintf(stderr, "\nNombre d'options : %d\n", nb);
 	do
 		{
 		if(strcmp(opt[i], "fond")==0 && opt[i+1]!=NULL)
-			optionsFond(option, opt[i+1]);	// Couleur du fond
+			optionsFond(options, opt[i+1]);	// Couleur du fond
 		if(strcmp(opt[i], "mode")==0 && opt[i+1]!=NULL)
-			optionsMode(option, opt[i+1]);	// Mode -1 : Wait, 1 : Poll
+			optionsMode(options, opt[i+1]);	// Mode -1 : Wait, 1 : Poll
 		if(strcmp(opt[i], "pause")==0 && opt[i+1]!=NULL)
-			optionsPause(option, opt[i+1]);	// temps de pause en ms
+			optionsPause(options, opt[i+1]);	// temps de pause en ms
 		if(strcmp(opt[i], "duree")==0 && opt[i+1]!=NULL)
-			optionsDuree(option, opt[i+1]);	// Nombre d'évolution du système entre les affichages.
+			optionsDuree(options, opt[i+1]);	// Nombre d'évolution du système entre les affichages.
 
 
 		if(strcmp(opt[i], "equation")==0 && opt[i+1]!=NULL)
-			optionsEquation(option, opt[i+1]);	// choix de l'équation
+			optionsEquation(options, opt[i+1]);	// choix de l'équation
 		if(strcmp(opt[i], "dt")==0 && opt[i+1]!=NULL)
-			optionsDt(option, opt[i+1]);		// discrétisation du temps
+			optionsDt(options, opt[i+1]);		// discrétisation du temps
 
 		if(strcmp(opt[i], "soliton")==0 && opt[i+1]!=NULL)
-			optionsSoliton(option, opt[i+1]);	// déphasage entre les extrémitées
+			optionsSoliton(options, opt[i+1]);	// déphasage entre les extrémitées
 
 
 		if(strcmp(opt[i], "moteur")==0 && opt[i+1]!=NULL)
-			optionsMoteur(option, opt[i+1]);	// état du moteur
+			optionsMoteur(options, opt[i+1]);	// état du moteur
 
 		if(strcmp(opt[i], "frequence")==0 && opt[i+1]!=NULL)
-			optionsFrequence(option, opt[i+1]);	// fréquence du générateur
+			optionsFrequence(options, opt[i+1]);	// fréquence du générateur
 
 		if(strcmp(opt[i], "dissipation")==0 && opt[i+1]!=NULL)
-			optionsDissipation(option, opt[i+1]);	// dissipation
+			optionsDissipation(options, opt[i+1]);	// dissipation
 /*
 		if(strcmp(opt[i], "th")==0)
-			optionsThread(option, opt[i+1]);	// Deux threads
+			optionsThread(options, opt[i+1]);	// Deux threads
 */
 		if(strcmp(opt[i], "aide")==0)
 			optionsAide();	// Affiche l'aide.
@@ -95,119 +95,119 @@ int optionsTraitement(options * option, int nb, char *opt[])
 	}
 
     	// Couleur du fond 
-void optionsFond(options * option, char *opt)
+void optionsFond(optionsT * options, char *opt)
 	{
 	int fond = atoi(opt);
 	if(fond>0 && fond<255)
 		{
-		(*option).fond = fond;
-		printf("Option fond valide, fond = %d\n", (*option).fond);
+		(*options).fond = fond;
+		printf("Option fond valide, fond = %d\n", (*options).fond);
 		}
 	else
 		{
-		printf("Option fond non valide, fond = %d\n", (*option).fond);
+		printf("Option fond non valide, fond = %d\n", (*options).fond);
 		printf("Option fond : 0 < fond < 255\n");
 		}
 	return;
 	}
 
 		// déphasage entre les extrémitées
-void optionsSoliton(options * option, char *opt)
+void optionsSoliton(optionsT * options, char *opt)
 	{
 	int dephasage = atoi(opt);
 	if(dephasage > -99 && dephasage < 99)
 		{
-		(*option).dephasage = dephasage * 2 * PI;
-		printf("Option soliton valide, dephasage = %d\n", (*option).dephasage);
+		(*options).dephasage = dephasage * 2 * PI;
+		printf("Option soliton valide, dephasage = %d\n", (*options).dephasage);
 		}
 	else
 		{
-		printf("Option soliton non valide, dephasage = %d\n", (*option).dephasage);
+		printf("Option soliton non valide, dephasage = %d\n", (*options).dephasage);
 		printf("Option soliton : -99 < dephasage < 99\n");
 		}
 	return;
 	}
 
     	// discrétisation du temps 
-void optionsDt(options * option, char *opt)
+void optionsDt(optionsT * options, char *opt)
 	{
 	float dt = atof(opt);
 	if(dt>0.0 && dt<DT_MAX)
 		{
-		(*option).dt = dt;
-		printf("Option dt valide, dt = %f\n", (*option).dt);
+		(*options).dt = dt;
+		printf("Option dt valide, dt = %f\n", (*options).dt);
 		}
 	else
 		{
-		printf("Option dt non valide, dt = %f\n", (*option).dt);
+		printf("Option dt non valide, dt = %f\n", (*options).dt);
 		printf("Option dt : 0.0 < dt < %f\n", DT_MAX);
 		}
 	return;
 	}
 
     	// État du moteur
-void optionsMoteur(options * option, char *opt)
+void optionsMoteur(optionsT * options, char *opt)
 	{
 	int etat = atoi(opt);
 	if(etat>-1 && etat<4)
 		{
-		(*option).moteur = etat;
-		printf("Option moteur valide, moteur = %d\n", (*option).moteur);
+		(*options).moteur = etat;
+		printf("Option moteur valide, moteur = %d\n", (*options).moteur);
 		}
 	else
 		{
-		printf("Option moteur non valide, moteur = %d\n", (*option).moteur);
+		printf("Option moteur non valide, moteur = %d\n", (*options).moteur);
 		printf("Option moteur : -1 < fr < 4\n");
 		}
 	return;
 	}
 
     	// Fréquence du générateur
-void optionsFrequence(options * option, char *opt)
+void optionsFrequence(optionsT * options, char *opt)
 	{
 	float fr = atof(opt);
 	if(fr>0.1 && fr<1111)
 		{
-		(*option).frequence = fr;
-		printf("Option frequence valide, fr = %f\n", (*option).frequence);
+		(*options).frequence = fr;
+		printf("Option frequence valide, fr = %f\n", (*options).frequence);
 		}
 	else
 		{
-		printf("Option frequence non valide, fr = %f\n", (*option).frequence);
+		printf("Option frequence non valide, fr = %f\n", (*options).frequence);
 		printf("Option frequence : 0.1 < fr < 1111\n");
 		}
 	return;
 	}
 
     	// Dissipation
-void optionsDissipation(options * option, char *opt)
+void optionsDissipation(optionsT * options, char *opt)
 	{
 	float dissipation = atof(opt);
 	if(dissipation>0.0001 && dissipation<1111)
 		{
-		(*option).dissipation = dissipation;
-		printf("Option dissipation valide, dissipation = %f\n", (*option).dissipation);
+		(*options).dissipation = dissipation;
+		printf("Option dissipation valide, dissipation = %f\n", (*options).dissipation);
 		}
 	else
 		{
-		printf("Option dissipation non valide, dissipation = %f\n", (*option).dissipation);
+		printf("Option dissipation non valide, dissipation = %f\n", (*options).dissipation);
 		printf("Option dissipation : 0.0001 < dissipation < 1111\n");
 		}
 	return;
 	}
 
 		// choix de l'équation
-void optionsEquation(options * option, char *opt)
+void optionsEquation(optionsT * options, char *opt)
 	{
 	int equation = atoi(opt);
 	if(equation > 0 && equation <5)
 		{
-		(*option).equation = equation;
-		printf("Option equation valide, equation = %d\n", (*option).equation);
+		(*options).equation = equation;
+		printf("Option equation valide, equation = %d\n", (*options).equation);
 		}
 	else
 		{
-		printf("Option equation non valide, equation = %d\n", (*option).equation);
+		printf("Option equation non valide, equation = %d\n", (*options).equation);
 		printf("Option equation : 1 < equation < 5\n");
 		}
 	return;
@@ -215,68 +215,68 @@ void optionsEquation(options * option, char *opt)
 
 
     	// Nombre d'évolution du système entre les affichages
-void optionsDuree(options * option, char *opt)
+void optionsDuree(optionsT * options, char *opt)
 	{
 	int duree = atoi(opt);
 	if ( duree > 0 && duree < DUREE_MAX)
 		{
-		(*option).duree = duree;
-		printf("Option duree valide, duree = %d\n", (*option).duree);
+		(*options).duree = duree;
+		printf("Option duree valide, duree = %d\n", (*options).duree);
 		}
 	else
 		{
-		printf("Option duree non valide, duree = %d\n", (*option).duree);
+		printf("Option duree non valide, duree = %d\n", (*options).duree);
 		printf("Option duree : 0.0 < duree < %d\n", DUREE_MAX);
 		}
 	return;
 	}
 
     	// Temps de pause en ms après affichage graphique
-void optionsPause(options * option, char *opt)
+void optionsPause(optionsT * options, char *opt)
 	{
 	int pause = atoi(opt);
 	if(pause>5 || pause<555)
 		{
-		(*option).pause = pause;
-		printf("Option t valide, pause = %d\n", (*option).pause);
+		(*options).pause = pause;
+		printf("Option t valide, pause = %d\n", (*options).pause);
 		}
 	else
 		{
-		printf("Option t non valide, pause = %d\n", (*option).pause);
+		printf("Option t non valide, pause = %d\n", (*options).pause);
 		printf("Option t : 5 < pause < 555\n");
 		}
 	return;
 	}
 
 		// Mode  -1 : Wait, 1 : Poll
-void optionsMode(options * option, char *opt)
+void optionsMode(optionsT * options, char *opt)
 	{
 	int mode = atoi(opt);
 	if(mode==1 || mode==-1)
 		{
-		(*option).mode = mode;
-		printf("Option mode valide, mode = %d\n", (*option).mode);
+		(*options).mode = mode;
+		printf("Option mode valide, mode = %d\n", (*options).mode);
 		}
 	else
 		{
-		printf("Option mode non valide, mode = %d\n", (*option).mode);
+		printf("Option mode non valide, mode = %d\n", (*options).mode);
 		printf("Option mode : mode = +/- 1\n");
 		}
 	return;
 	}
 
     	// Un processus ou deux threads
-void optionsThread(options * option, char *opt)
+void optionsThread(optionsT * options, char *opt)
 	{
 	int thread = atoi(opt);
 	if(thread==1 || thread==0)
 		{
-		(*option).thread = thread;
-		printf("Option thread valide, thread = %d\n", (*option).thread);
+		(*options).thread = thread;
+		printf("Option thread valide, thread = %d\n", (*options).thread);
 		}
 	else
 		{
-		printf("Option thread non valide, thread = %d\n", (*option).thread);
+		printf("Option thread non valide, thread = %d\n", (*options).thread);
 		printf("Option thread : thread = 0 ou 1\n");
 		}
 	return;

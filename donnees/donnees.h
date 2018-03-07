@@ -35,7 +35,7 @@ termes.
 
 #include "../controle/controleur.h"
 
-int donneesOptions(options * option);
-int donneesControleur(controleur * control);
+int donneesOptions(optionsT * options);
+int donneesControleur(controleurT * controleur);
 
 #endif

@@ -34,20 +34,20 @@ termes.
 
 int main(int nb, char *opt[])
 	{
-	controleur control;
+	controleurT controleur;
 
 	fprintf(stderr, "\nInitialisations des options\n");
-	if(donneesOptions(&control.option)==0)
+	if(donneesOptions(&controleur.options)==0)
 		{
 		fprintf(stderr, "Traitement des options de la ligne de commande\n");
-		optionsTraitement(&control.option, nb, opt);
+		optionsTraitement(&controleur.options, nb, opt);
 		}
 
 	fprintf(stderr, "Initialisations\n");
-	if(donneesControleur(&control)==0)
+	if(donneesControleur(&controleur)==0)
 		{
 		fprintf(stderr, "Simulation graphique du système, \n");
-		controleurSimulationGraphique(&control);
+		controleurSimulationGraphique(&controleur);
 		}
 	else
 		{
@@ -55,9 +55,9 @@ int main(int nb, char *opt[])
 		}
 
 	//fprintf(stderr, "Calcul énergétique\n");
-	//observableAfficheEnergie(&control.system);
+	//observableAfficheEnergie(&controleur.system);
 
-	fprintf(stderr, "\nSortie de SiCF\n");
+	fprintf(stderr, "\nSortie de SiOP\n");
 
 	return 0;
 	}

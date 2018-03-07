@@ -36,8 +36,8 @@ termes.
 #include "constantes.h"
 #include "string.h"
 
-typedef struct Options options;
-	struct Options
+typedef struct OptionsT optionsT;
+	struct OptionsT
 		{
 
 		int duree;	// nombre d'incrémentation du système par affichage
@@ -64,6 +64,6 @@ typedef struct Options options;
 
 		};
 
-int optionsTraitement(options * opt, int nbOpt, char *option[]);
+int optionsTraitement(optionsT * options, int nbOpt, char *option[]);
 
 #endif

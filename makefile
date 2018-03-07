@@ -38,8 +38,8 @@ OBJDIR = ./obj
 
 all : $(EXEC)
 
-$(EXEC) : $(OBJDIR)/principale.o $(OBJDIR)/options.o $(OBJDIR)/processus.o $(OBJDIR)/donnees.o $(OBJDIR)/fichier.o $(OBJDIR)/controleur.o $(OBJDIR)/projection.o $(OBJDIR)/graphique.o $(OBJDIR)/graphe.o $(OBJDIR)/fourier.o $(OBJDIR)/observables.o $(OBJDIR)/change.o $(OBJDIR)/systeme.o $(OBJDIR)/moteurs.o $(OBJDIR)/pendule.o
-	$(CC) -g $(OBJDIR)/principale.o $(OBJDIR)/options.o $(OBJDIR)/processus.o $(OBJDIR)/donnees.o $(OBJDIR)/fichier.o $(OBJDIR)/controleur.o $(OBJDIR)/projection.o $(OBJDIR)/graphique.o $(OBJDIR)/graphe.o $(OBJDIR)/fourier.o $(OBJDIR)/observables.o $(OBJDIR)/change.o $(OBJDIR)/systeme.o $(OBJDIR)/moteurs.o $(OBJDIR)/pendule.o ` sdl-config --libs` $(LDFLAGS) -o $(EXEC)
+$(EXEC) : $(OBJDIR)/principale.o $(OBJDIR)/options.o $(OBJDIR)/donnees.o $(OBJDIR)/controleur.o $(OBJDIR)/projection.o $(OBJDIR)/graphique.o $(OBJDIR)/graphe.o $(OBJDIR)/fourier.o $(OBJDIR)/observables.o $(OBJDIR)/change.o $(OBJDIR)/systeme.o $(OBJDIR)/moteurs.o $(OBJDIR)/pendule.o
+	$(CC) -g $(OBJDIR)/principale.o $(OBJDIR)/options.o $(OBJDIR)/donnees.o $(OBJDIR)/controleur.o $(OBJDIR)/projection.o $(OBJDIR)/graphique.o $(OBJDIR)/graphe.o $(OBJDIR)/fourier.o $(OBJDIR)/observables.o $(OBJDIR)/change.o $(OBJDIR)/systeme.o $(OBJDIR)/moteurs.o $(OBJDIR)/pendule.o ` sdl-config --libs` $(LDFLAGS) -o $(EXEC)
 
 $(OBJDIR)/principale.o : controle/principale.c controle/principale.h
 	$(CC) -c -g controle/principale.c $(CFLAGS) -o $@

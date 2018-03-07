@@ -34,7 +34,7 @@ termes.
 #define _PRINCIPALE_
 
 #include "../projection/projection.h"
-#include "../controle/processus.h"
+//#include "../controle/processus.h"
 #include "../donnees/donnees.h"
 
 #endif

@@ -40,94 +40,89 @@ termes.
 	//		Initialisation de la SDL
 
 
-int donneesSysteme(systemeT * systeme, options * option);
-int donneesGraphe(graphe * graph, options * option);
+int donneesSysteme(systemeT * systeme, optionsT * options);
+int donneesGraphe(grapheT * graphe, optionsT * options);
 
-int donneesControleur(controleur * control)
+int donneesControleur(controleurT * controleur)
 	{
 
-	(*control).option.sortie = 0;	// Sortie de SiCP si > 0
+	(*controleur).options.sortie = 0;	// Sortie de SiCP si > 0
 
 		fprintf(stderr, " Initialisation du système\n");
-	donneesSysteme(&(*control).systeme, &(*control).option);
+	donneesSysteme(&(*controleur).systeme, &(*controleur).options);
 
-		//fprintf(stderr, " Création du système\n");
-	//systemeCreation(&(*control).systeme);
-
-		fprintf(stderr, " Initialisation des graphe\n");
-	donneesGraphe(&(*control).graphCorde, &(*control).option);
-	donneesGraphe(&(*control).graphSpectre, &(*control).option);
+		fprintf(stderr, " Initialisation du graphe\n");
+	donneesGraphe(&(*controleur).graphe, &(*controleur).options);
 
 		fprintf(stderr, " Initialisation SDL\n");
-	graphiqueInitialise((*control).systeme.equation, (*control).option.fond);
+	interfaceInitialisation(&(*controleur).interface, (*controleur).options.fond);
 
 	return 0;
 	}
 
-int donneesGraphe(graphe * graph, options * option)
+int donneesGraphe(grapheT * graphe, optionsT * options)
 	{
-	(*graph).rouge=20;
-	(*graph).bleu=150;
-	(*graph).vert=200;
-	(*graph).fond=(*option).fond;	//	Couleur du fond
-	(*graph).echelle=0.003;
+	(*graphe).rouge=20;
+	(*graphe).bleu=150;
+	(*graphe).vert=200;
+	(*graphe).fond=(*options).fond;	//	Couleur du fond
 	return 0;
 	}
 
-int donneesOptions(options * option)
+int donneesoptionsT(optionsT * options)
 	{
 		// Préréglage des valeurs optionnelles
 
-	(*option).fond=240;		// couleur du fond de l'affichage
-	(*option).mode = 1;	// -1 : Wait, 1 : Poll
-	(*option).pause=25;		// temps de pause SDL en ms
+	(*options).fond=240;		// couleur du fond de l'affichage
+	(*options).mode = 1;	// -1 : Wait, 1 : Poll
+	(*options).pause=25;		// temps de pause SDL en ms
 
-	(*option).duree = 100;	// 100 : temps réèl. Voir options.c
+	(*options).duree = 100;	// 100 : temps réèl. Voir optionsT.c
 
-	(*option).equation=3;	// 1 : pendule, 2 : linéarisation,
+	(*options).equation=3;	// 1 : pendule, 2 : linéarisation,
 							//	 3 : corde, 4 : dioptre
 
-	(*option).sensibilite=0.11;	// sensibilité des commandes
-	(*option).augmente = 1+(*option).sensibilite;	// sensibilité des commandes
-	(*option).diminue = 1/(*option).augmente;	// sensibilité des commandes
+	(*options).sensibilite=0.11;	// sensibilité des commandes
+	(*options).augmente = 1+(*options).sensibilite;	// sensibilité des commandes
+	(*options).diminue = 1/(*options).augmente;	// sensibilité des commandes
 
-	(*option).dt=0.0006;	// discrétisation du temps
-	(*option).moteur=3;	// État du moteur
+	(*options).dt=0.0006;	// discrétisation du temps
+	(*options).moteur=3;	// État du moteur
 							// 25 images par seconde, SDL_Delay(30);
 							// dt*duree = 0.004
 
-	(*option).dephasage=0*PI;
+	(*options).dephasage=0*PI;
 
-	(*option).frequence=11.1;	// Fréquence du générateur de signaux
+	(*options).frequence=11.1;	// Fréquence du générateur de signaux
 
-	(*option).dissipation=0.0;	// Fréquence du générateur de signaux
+	(*options).dissipation=0.0;	// Fréquence du générateur de signaux
 
-	(*option).thread=0;		// 0 : un processus, 1 : deux threads
+	(*options).thread=0;		// 0 : un processus, 1 : deux threads
 
 	return 0;
 	}
 
-int donneesSysteme(systemeT * systeme, options * option)
+int donneesSysteme(systemeT * systeme, optionsT * options)
 	{
 
 		// Initialisation du moteurs
 
-	(*systeme).moteur.dt = (*option).dt;	// discrétisation du temps
+	(*systeme).moteur.dt = (*options).dt;	// discrétisation du temps
 	//(*systeme).moteur.horloge = 0.0;
 	(*systeme).moteur.chrono = 0.0;
 
 	(*systeme).moteur.courant=15.0;		// Mémoire courant Josephson si = 0
 	(*systeme).moteur.josephson=0.0;
 
-	(*systeme).moteur.generateur = (*option).moteur;	// éteint, sinus, carre, impulsion
+	(*systeme).moteur.generateur = (*options).moteur;	// éteint, sinus, carre, impulsion
 	(*systeme).moteur.amplitude=0.57;		// Amplitude du générateur de signaux
-	(*systeme).moteur.frequence=(*option).frequence;	// Fréquence du générateur de signaux
+	(*systeme).moteur.frequence=(*options).frequence;	// Fréquence du générateur de signaux
 	(*systeme).moteur.phi=0;
 
 
 		// Caractéristique de la chaîne
 	(*systeme).libreFixe = 2;	// 0 periodique, 1 libre, 2 fixe
-	(*systeme).equation = (*option).equation;	// 1 : pendule pesant
+	(*systeme).equation = (*options).equation;	// 1 : pendule pesant
 												// 2 : linéarisation
 												// 3 : corde
 												// 4 : dioptre
@@ -137,9 +132,9 @@ int donneesSysteme(systemeT * systeme, options * option)
 	(*systeme).masseGauche = 1.0;
 	(*systeme).masseDroite = 3.0;
 	(*systeme).longueur = 9.81/4/PI/PI; // = 25 cm => période = 1 s
-	(*systeme).dissipation = (*option).dissipation;
+	(*systeme).dissipation = (*options).dissipation;
 	(*systeme).couplage = 100321.1;
-	(*systeme).dephasage = (*option).dephasage;
+	(*systeme).dephasage = (*options).dephasage;
 
 
 
